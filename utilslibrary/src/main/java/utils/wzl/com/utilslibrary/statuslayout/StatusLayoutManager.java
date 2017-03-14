@@ -1,14 +1,10 @@
-package utils.wzl.com.utilslibrary.statuslayout.manager;
+package utils.wzl.com.utilslibrary.statuslayout;
 
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
-
-import utils.wzl.com.utilslibrary.statuslayout.layout.RootFrameLayout;
-import utils.wzl.com.utilslibrary.statuslayout.listener.OnRetryListener;
-import utils.wzl.com.utilslibrary.statuslayout.listener.OnShowHideViewListener;
 
 /**
  * Created by chenpengfei on 2016/12/15.
