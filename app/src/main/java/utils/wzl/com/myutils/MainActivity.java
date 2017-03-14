@@ -19,6 +19,6 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.statusLayout)
     public void onClick() {
-        Toast.makeText(App.getContext(),"布局geng",Toast.LENGTH_SHORT).show();
+        Toast.makeText(App.getContext(),"布局gsdfdf eng",Toast.LENGTH_SHORT).show();
     }
 }
