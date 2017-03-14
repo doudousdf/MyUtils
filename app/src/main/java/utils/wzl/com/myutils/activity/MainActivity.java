@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.statusLayout)
     public void onClick() {
+        //sdfasf
        startActivity(new Intent(this,StatusLayoutActivity.class));
     }
 }
