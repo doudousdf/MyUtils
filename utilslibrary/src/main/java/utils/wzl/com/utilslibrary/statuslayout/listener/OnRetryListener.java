@@ -1,4 +1,4 @@
-package utils.wzl.com.utilslibrary.statuslayout;
+package utils.wzl.com.utilslibrary.statuslayout.listener;
 
 /**
  * Created by chenpengfei on 2017/2/6.

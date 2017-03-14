@@ -1,4 +1,4 @@
-package utils.wzl.com.utilslibrary.statuslayout;
+package utils.wzl.com.utilslibrary.statuslayout.manager;
 
 import android.content.Context;
 import android.support.annotation.LayoutRes;
@@ -6,25 +6,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 
+import utils.wzl.com.utilslibrary.statuslayout.layout.RootFrameLayout;
+import utils.wzl.com.utilslibrary.statuslayout.listener.OnRetryListener;
+import utils.wzl.com.utilslibrary.statuslayout.listener.OnShowHideViewListener;
+
 /**
  * Created by chenpengfei on 2016/12/15.
  */
 public class StatusLayoutManager {
 
-     final Context context;
-     final ViewStub netWorkErrorVs;
-     final int netWorkErrorRetryViewId;
-     final ViewStub emptyDataVs;
-     final int emptyDataRetryViewId;
-     final ViewStub errorVs;
-     final int errorRetryViewId;
-     final int loadingLayoutResId;
-     final int contentLayoutResId;
-     final int retryViewId;
+    public final Context context;
+    public final ViewStub netWorkErrorVs;
+    public final int netWorkErrorRetryViewId;
+    public final ViewStub emptyDataVs;
+    public final int emptyDataRetryViewId;
+    public final ViewStub errorVs;
+    public final int errorRetryViewId;
+    public final int loadingLayoutResId;
+    public final int contentLayoutResId;
+    public final int retryViewId;
 
-     final RootFrameLayout rootFrameLayout;
-     final OnShowHideViewListener onShowHideViewListener;
-     final OnRetryListener onRetryListener;
+    final RootFrameLayout rootFrameLayout;
+    public final OnShowHideViewListener onShowHideViewListener;
+    public final OnRetryListener onRetryListener;
 
     private StatusLayoutManager(Builder builder) {
         this.context = builder.context;
@@ -48,42 +52,42 @@ public class StatusLayoutManager {
 
 
     /**
-     *  显示loading
+     * 显示loading
      */
     public void showLoading() {
         rootFrameLayout.showLoading();
     }
 
     /**
-     *  显示内容
+     * 显示内容
      */
     public void showContent() {
         rootFrameLayout.showContent();
     }
 
     /**
-     *  显示空数据
+     * 显示空数据
      */
     public void showEmptyData() {
         rootFrameLayout.showEmptyData();
     }
 
     /**
-     *  显示网络异常
+     * 显示网络异常
      */
     public void showNetWorkError() {
         rootFrameLayout.showNetWorkError();
     }
 
     /**
-     *  显示异常
+     * 显示异常
      */
     public void showError() {
         rootFrameLayout.showError();
     }
 
     /**
-     *  得到root 布局
+     * 得到root 布局
      */
     public View getRootLayout() {
         return rootFrameLayout;
@@ -173,7 +177,7 @@ public class StatusLayoutManager {
     }
 
     public static Builder newBuilder(Context context) {
-       return new Builder(context);
+        return new Builder(context);
     }
 
 }
