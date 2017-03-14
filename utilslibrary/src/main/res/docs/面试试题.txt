@@ -1,0 +1,94 @@
+1.*************如何对 Android 应用进行性能分析***************************
+
+android 性能主要之响应速度 和UI刷新速度。
+可以参考博客：Android系统性能调优工具介绍
+首先从函数的耗时来说，有一个工具TraceView 这是androidsdk自带的工作，用于测量函数耗时的。
+UI布局的分析，可以有2块，一块就是Hierarchy Viewer 可以看到View的布局层次，以及每个View刷新加载的时间。
+这样可以很快定位到那块layout & View 耗时最长。
+还有就是通过自定义View来减少view的层次。
+
+2.**********************什么情况下会导致内存泄露***********************
+
+什么时候会发生内存泄露？内存泄露的根本原因：长生命周期的对象持有短生命周期的对象。短周期对象就无法及时释放。
+Android 的虚拟机是基于寄存器的Dalvik，它的最大堆大小一般是16M，有的机器为24M。因此我们所能利用的内存空间是有限的。
+如果我们的内存占用超过了一定的水平就会出现OutOfMemory 的错误。
+
+主要是hashmap，Vector等，如果是静态集合 这些集合没有及时setnull的话，就会一直持有这些对象。
+II.remove 方法无法删除set集  Objects.hash(firstName, lastName);
+经过测试，hashcode修改后，就没有办法remove了。
+III. observer 我们在使用监听器的时候，往往是addxxxlistener，但是当我们不需要的时候，忘记removexxxlistener，就容易内存leak。
+广播没有unregisterrecevier
+IV.各种数据链接没有关闭，数据库contentprovider，io，sokect等。cursor
+V.内部类：
+java中的内部类（匿名内部类），会持有宿主类的强引用this。
+所以如果是new Thread这种，后台线程的操作，当线程没有执行结束时，activity不会被回收。
+Context的引用，当TextView 等等都会持有上下文的引用。如果有static drawable，就会导致该内存无法释放。
+VI.单例
+单例 是一个全局的静态对象，当持有某个复制的类A是，A无法被释放，内存leak。
+4.Android 中如何捕获未捕获的异常
+关键是实现Thread.UncaughtExceptionHandler
+然后是在application的oncreate里面注册。
+
+5.ANR 是什么？怎样避免和解决 ANR（重要）
+ANR->Application Not Responding
+也就是在规定的时间内，没有响应。
+三种类型：
+1）. KeyDispatchTimeout(5 seconds) --主要类型按键或触摸事件在特定时间内无响应
+2）. BroadcastTimeout(10 seconds) --BroadcastReceiver在特定时间内无法处理完成
+3）. ServiceTimeout(20 seconds) --小概率类型 Service在特定的时间内无法处理完成
+为什么会超时：事件没有机会处理 & 事件处理超时
+怎么避免ANR
+ANR的关键
+是处理超时，所以应该避免在UI线程，BroadcastReceiver 还有service主线程中，处理复杂的逻辑和计算
+而交给work thread操作。
+1）避免在activity里面做耗时操作，oncreate & onresume
+2）避免在onReceiver里面做过多操作
+3）避免在Intent Receiver里启动一个Activity，因为它会创建一个新的画面，并从当前用户正在运行的程序上抢夺焦点。
+4）尽量使用handler来处理UI thread & workthread的交互。
+6.Android 线程间通信有哪几种方式
+1）共享变量（内存）
+2）管道：（管道是进程间通信中最古老的方式，它包括 无名管道 和 有名管道两种，前者用于父进程和子进程间的通信，后者用于运行于同一台机器上的任意两个进程间的通信。 无名管道由pipe()函数创建。）
+3）handle机制
+runOnUiThread(Runnable)
+view.post(Runnable)
+7.Devik 进程，linux 进程，线程的区别
+Dalvik进程。
+每一个android app都会独立占用一个dvm虚拟机，运行在linux系统中。
+所以dalvik进程和linux进程是可以理解为一个概念。
+8.描述一下 android 的系统架构
+从小到上就是：
+linux kernel,lib dalvik vm ,application framework, app
+9.android 应用对内存是如何限制的?我们应该如何合理使用内存？
+activitymanager.getMemoryClass()  获取内存限制。
+关于合理使用内存，其实就是避免OOM & 内存泄露中已经说明。
+10. 简述 android 应用程序结构是哪些
+1）main code
+2) unit test
+3）mianifest
+4）res->drawable,drawable-xxhdpi,layout,value,mipmap
+mipmap 是一种很早就有的技术了，翻译过来就是纹理映射技术.
+google建议只把启动图片放入。
+5）lib
+6）color
+11.请解释下 Android 程序运行时权限与文件系统权限的区别
+文件的系统权限是由linux系统规定的，只读，读写等。
+运行时权限，是对于某个系统上的app的访问权限，允许，拒绝，询问。该功能可以防止非法的程序访问敏感的信息。
+12.Framework 工作方式及原理，Activity 是如何生成一个 view 的，机制是什么
+Framework是android 系统对 linux kernel，lib库等封装，提供WMS，AMS，bind机制，handler-message机制等方式，供app使用。
+简单来说framework就是提供app生存的环境。
+1）Activity在attch方法的时候，会创建一个phonewindow（window的子类）
+2）onCreate中的setContentView方法，会创建DecorView
+3）DecorView 的addview方法，会把layout中的布局加载进来。
+13.多线程间通信和多进程之间通信有什么不同，分别怎么实现
+线程间的通信可以参考第6点。
+进程间的通信：
+bind机制（IPC->AIDL)
+linux级共享内存
+boradcast
+Activity之间可以通过intent来传递数据
+14.Android 屏幕适配
+屏幕适配的方式：xxxdpi， wrap_content,match_parent. 获取屏幕大小，做处理。
+dp来适配屏幕，sp来确定字体大小
+drawable-xxdpi, values-1280*1920等 这些就是资源的适配。
+wrap_content,match_parent, 这些是view的自适应
+weight，这是权重的适配。
