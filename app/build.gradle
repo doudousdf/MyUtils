@@ -43,4 +43,5 @@ dependencies {
     testCompile rootProject.ext.dependencies["testjuit"]
     compile project(':utilslibrary')
 
+    compile 'com.android.support:appcompat-v7:25.1.1'
 }
