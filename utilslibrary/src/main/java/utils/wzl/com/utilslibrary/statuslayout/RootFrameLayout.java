@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import utils.wzl.com.utilslibrary.statuslayout.manager.StatusLayoutManager;
+
 /**
  * Created by chenpengfei on 2016/12/15.
  */

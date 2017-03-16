@@ -9,9 +9,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import utils.wzl.com.myutils.R;
-import utils.wzl.com.utilslibrary.statuslayout.OnRetryListener;
-import utils.wzl.com.utilslibrary.statuslayout.OnShowHideViewListener;
-import utils.wzl.com.utilslibrary.statuslayout.StatusLayoutManager;
+import utils.wzl.com.utilslibrary.statuslayout.listener.OnRetryListener;
+import utils.wzl.com.utilslibrary.statuslayout.listener.OnShowHideViewListener;
+import utils.wzl.com.utilslibrary.statuslayout.manager.StatusLayoutManager;
 
 public class StatusLayoutActivity extends AppCompatActivity {
     protected StatusLayoutManager statusLayoutManager;

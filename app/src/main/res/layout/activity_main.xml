@@ -17,6 +17,12 @@
             android:text="网络布局功能"
             android:id="@+id/statusLayout"
             />
+
+        <Button
+            android:id="@+id/permission"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:text="权限功能" />
     </LinearLayout>
 
 </ScrollView>
